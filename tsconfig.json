@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "target": "ES2021",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "types": ["bun-types", "elysia"],
+    "paths": {
+      "@utils": ["src/index.ts"],
+      "@utils/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}
