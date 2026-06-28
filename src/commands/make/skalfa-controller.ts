@@ -4,10 +4,12 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { lightControllerStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:light-controller
 // =====================================>
-export const makeLightControllerCommand = new Command("make:light-controller")
+export const makeLightControllerCommand = new Command("make:skalfa-controller")
   .argument("<name>", "Name of controller")
   .option("-m, --model <model>", "Attach model to controller")
   .description("Make the Light Controller")
@@ -17,7 +19,7 @@ export const makeLightControllerCommand = new Command("make:light-controller")
   });
 
 export const makeLightController = (controllerName: string, modelName?: string) => {
-  const basePath = path.join(process.cwd(), "src", "controllers");
+  const basePath = path.join(process.cwd(), "app", "controllers");
 
   if (!controllerName || controllerName.trim() === "") {
     logger.error("Controller name invalid!");

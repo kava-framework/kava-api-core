@@ -21,7 +21,7 @@ export const seederCommand = new Command("seeder")
 export const runSeeder = async () => {
   const seedersDir = fs.existsSync(path.join(process.cwd(), "database", "seeders"))
     ? path.join(process.cwd(), "database", "seeders")
-    : path.join(process.cwd(), "src", "database", "seeders");
+    : path.join(process.cwd(), "database", "seeders");
   if (!fs.existsSync(seedersDir)) {
     logger.info("No seeders directory found.");
     return;

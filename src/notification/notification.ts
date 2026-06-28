@@ -17,6 +17,9 @@ export type NotificationCancelPayload = {
 }
 
 export const notification = {
+  // =====================================>
+  // ## Notification: send notification
+  // =====================================>
   send: async (payload: NotificationPayload) => {
     const userIds = [...new Set(payload.userIds)];
     if (userIds.length === 0) return;
@@ -50,6 +53,9 @@ export const notification = {
     }
   },
 
+  // =====================================>
+  // ## Notification: cancel notification
+  // =====================================>
   cancel: async (payload: NotificationCancelPayload) => {
     try {
       await db('notification_users')
@@ -64,6 +70,8 @@ export const notification = {
     }
   }
 };
+
+
 
 function emitNotificationSocket(userIds: number[], notificationRecord: Record<string, any>) {
   const socket = registry.get("socket");

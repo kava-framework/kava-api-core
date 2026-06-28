@@ -4,6 +4,8 @@ import { exec, execSync } from "child_process";
 import { Command } from "commander";
 import { logger } from "@utils";
 
+
+
 // =====================================>
 // ## Command: barrels (run once)
 // =====================================>
@@ -28,6 +30,8 @@ export const barrelsCommand = new Command("barrels")
       process.exit(1);
     }
   });
+
+
 
 // =====================================>
 // ## Command: watch:barrels (file watcher)

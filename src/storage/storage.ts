@@ -102,6 +102,4 @@ export const storage = (app: Elysia) => app.get("/storage/*", async ({ params, s
 
     return new Response(buffer);
   }
-
-  
 });

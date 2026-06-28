@@ -4,10 +4,12 @@ import { Command } from "commander";
 import { logger } from "@utils";
 import { daMigrationStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:da:migration
 // =====================================>
-export const makeDaMigrationCommand = new Command("make:da:migration")
+export const makeDaMigrationCommand = new Command("make:da-migration")
   .argument("<name>", "Nama migration")
   .option("--init", "Buat migration init (0000_00)")
   .description("Membuat file migration baru")
@@ -24,9 +26,8 @@ export const makeDaMigration = (
 
   const baseDir = path.join(
     process.cwd(),
-    "src",
-    "database",
-    "da.migrations"
+    "analytic",
+    "migrations"
   );
 
   let targetDir: string;
@@ -62,7 +63,7 @@ export const makeDaMigration = (
   writeFileSync(filePath, content);
 
   logger.info(
-    `DA Migration created: ${path.relative(baseDir, filePath)}`
+    `Analytics Migration created: ${path.relative(baseDir, filePath)}`
   );
 
   process.exit(0);

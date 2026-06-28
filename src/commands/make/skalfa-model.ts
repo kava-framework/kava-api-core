@@ -2,15 +2,17 @@ import path from "path";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { Command } from "commander";
 import { conversion, logger } from "@utils";
-import { makeLightController } from "./light-controller";
+import { makeLightController } from "./skalfa-controller";
 import { makeMigration } from "./basic-migration";
 import { makeSeeder } from "./basic-seeder";
 import { lightModelStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:light-model
 // =====================================>
-export const makeLightModelCommand = new Command("make:light-model")
+export const makeLightModelCommand = new Command("make:skalfa-model")
   .argument("<name>", "Name of model")
   .option("-r", "Generate all resource (controller, migration, seeder)")
   .description("Make the Light Model")
@@ -30,7 +32,7 @@ export const makeLightModel = (modelName: string) => {
   const name = conversion.strPascal(modelName);
   const filename = conversion.strSlug(modelName) + ".model.ts";
 
-  const basePath = path.join(process.cwd(), "src", "models");
+  const basePath = path.join(process.cwd(), "app", "models");
 
   if (!existsSync(basePath)) {
     mkdirSync(basePath, { recursive: true });

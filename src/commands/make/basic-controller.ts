@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { basicControllerStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:controller
 // =====================================>
@@ -11,7 +13,7 @@ export const makeControllerCommand = new Command("make:controller")
   .argument("<name>", "Name of controller")
   .description("Create new controller")
   .action((controllerName) => {
-    const basePath = path.join(process.cwd(), "src", "controllers");
+    const basePath = path.join(process.cwd(), "app", "controllers");
     
     if (!controllerName || controllerName.trim() === "") {
       logger.error("Controller name invalid!");

@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { basicModelStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:model
 // =====================================>
@@ -14,7 +16,7 @@ export const makeModelCommand = new Command("make:model")
     const name = conversion.strPascal(modelName);
     const filename = conversion.strSlug(modelName) + ".model.ts";
 
-    const filePath = path.join(process.cwd(), "src", "models", filename);
+    const filePath = path.join(process.cwd(), "app", "models", filename);
 
     if (!existsSync(path.dirname(filePath))) {
       mkdirSync(path.dirname(filePath), { recursive: true });

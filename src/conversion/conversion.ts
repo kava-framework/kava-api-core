@@ -1,24 +1,37 @@
-export const conversion = {
+import { date } from './date'
 
-  // =============================>
-  // ## Conversion: String formatter 
-  // =============================>
+export const conversion = {
+  // =====================================>
+  // ## Conversion: format string to snake case
+  // =====================================>
   strSnake(value: string, delimiter: string = "_"): string {
     return toWords(value).join(delimiter)
   },
 
+  // =====================================>
+  // ## Conversion: format string to slug
+  // =====================================>
   strSlug(value: string, delimiter: string = "-"): string {
     return toWords(value).join(delimiter);
   },
 
+  // =====================================>
+  // ## Conversion: format string to camel case
+  // =====================================>
   strCamel(value: string, delimiter: string = ""): string {
     return toWords(value).map((w, i) => i === 0 ? w : w[0].toUpperCase() + w.slice(1)).join(delimiter);
   },
 
+  // =====================================>
+  // ## Conversion: format string to pascal case
+  // =====================================>
   strPascal(value: string, delimiter: string = ""): string {
     return toWords(value).map(w => w[0].toUpperCase() + w.slice(1)).join(delimiter);
   },
 
+  // =====================================>
+  // ## Conversion: format string to plural
+  // =====================================>
   strPlural(value: string): string {
     const match = value.match(/^(.*?)([A-Za-z]+)$/)
     if (!match) return value
@@ -34,6 +47,9 @@ export const conversion = {
     return value
   },
 
+  // =====================================>
+  // ## Conversion: format string to singular
+  // =====================================>
   strSingular(value: string): string {
     const match = value.match(/^(.*?)([A-Za-z]+)$/)
     if (!match) return value
@@ -49,7 +65,17 @@ export const conversion = {
     }
 
     return value
-  }
+  },
+
+  // =====================================>
+  // ## Conversion: format number to currency
+  // =====================================>
+  currency: (value: number, locale = "id-ID", currency = "IDR") => { const val = Math.trunc(value); return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val); }, 
+  
+  // =====================================>
+  // ## Conversion: format date string
+  // =====================================>
+  date: date,
 };
 
 

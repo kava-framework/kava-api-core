@@ -4,15 +4,16 @@ import { Command } from "commander";
 
 // Basic commands (always available)
 import { makeControllerCommand } from "./make/basic-controller";
-import { makeLightControllerCommand } from "./make/light-controller";
+import { makeLightControllerCommand } from "./make/skalfa-controller";
 import { barrelsCommand, watchBarrelsCommand } from "./runner/barrels";
 
 // ORM commands (optional)
 import { makeModelCommand } from "./make/basic-model";
 import { makeSeederCommand } from "./make/basic-seeder";
 import { makeMigrationCommand } from "./make/basic-migration";
-import { makeLightModelCommand } from "./make/light-model";
+import { makeLightModelCommand } from "./make/skalfa-model";
 import { makeBlueprintCommand } from "./make/blueprint";
+import { makeResourceCommand } from "./make/resource";
 import { migrateCommand, migrateFreshCommand } from "./runner/migration";
 import { seederCommand } from "./runner/seeder";
 import { blueprintCommand } from "./runner/blueprint/runner";
@@ -42,7 +43,7 @@ export function runCli() {
   const hasDa = !!dependencies["@skalfa/da"] || !!dependencies["skalfa-da"] || !!dependencies["@clickhouse/client"];
 
   const program = new Command();
-  program.name("skalfa").description("Skalfa Local CLI").version("1.0.0");
+  program.name("skalfa").description("Skalfa-api CLI").version("1.0.0");
 
   // 1. Add Core / Basic commands
   program.addCommand(makeControllerCommand);
@@ -57,6 +58,7 @@ export function runCli() {
     program.addCommand(makeSeederCommand);
     program.addCommand(makeLightModelCommand);
     program.addCommand(makeBlueprintCommand);
+    program.addCommand(makeResourceCommand);
     program.addCommand(migrateCommand);
     program.addCommand(migrateFreshCommand);
     program.addCommand(seederCommand);

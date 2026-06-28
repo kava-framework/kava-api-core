@@ -63,27 +63,68 @@ function log(type: LogType, msg: string) {
 }
 
 export const logger = {
+  // =====================================>
+  // ## Logger: log system startup messages
+  // =====================================>
   start    :  (msg: string) => log("start", msg),
+
+  // =====================================>
+  // ## Logger: log general info messages
+  // =====================================>
   info     :  (msg: string) => log("info", msg),
+
+  // =====================================>
+  // ## Logger: log warning messages
+  // =====================================>
   warning  :  (msg: string) => log("warning", msg),
+
+  // =====================================>
+  // ## Logger: log queue-related messages
+  // =====================================>
   queue    :  (msg: string) => log("queue", msg),
+
+  // =====================================>
+  // ## Logger: log cron-related messages
+  // =====================================>
   cron     :  (msg: string) => log("cron", msg),
+
+  // =====================================>
+  // ## Logger: log socket-related messages
+  // =====================================>
   socket   :  (msg: string) => log("socket", msg),
 
+  // =====================================>
+  // ## Logger: log request access details
+  // =====================================>
   access   :  (msg: AccessLog) => logAccess(msg),
 
+  // =====================================>
+  // ## Logger: log error messages
+  // =====================================>
   error: (msg: string, payload?: ErrorLog) => {
     log("error", msg)
     payload && logError({...payload, service: payload.service || 'app'})
   },
+
+  // =====================================>
+  // ## Logger: log queue error messages
+  // =====================================>
   queueError: (msg: string, payload?: ErrorLog) => {
     log("queueError", msg)
     payload && logError({...payload, service: payload.service || 'queue'})
   },
+
+  // =====================================>
+  // ## Logger: log cron error messages
+  // =====================================>
   cronError: (msg: string, payload?: ErrorLog) => {
     log("cronError", msg)
     payload && logError({...payload, service: payload.service || 'cron'})
   },
+
+  // =====================================>
+  // ## Logger: log socket error messages
+  // =====================================>
   socketError: (msg: string, payload?: ErrorLog) => {
     log("socketError", msg)
     payload && logError({...payload, service: payload.service || 'socket'})

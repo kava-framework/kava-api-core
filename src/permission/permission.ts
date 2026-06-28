@@ -14,6 +14,9 @@ type FeatureAccess = Partial<Record<KeyFeature, {
 }>>
 
 export const permission = {
+  // =====================================>
+  // ## Permission: register features and accesses
+  // =====================================>
   register: (def: FeatureAccess) => {
     const featureAccessMap = new Map<string, string>()
     let defaultFeature: KeyFeature | null = null
@@ -47,8 +50,14 @@ export const permission = {
     return createScopeApi(defaultFeature!)
   },
   
+  // =====================================>
+  // ## Permission: get registered features list
+  // =====================================>
   getFeatures: () => [...features.values()],
 
+  // =====================================>
+  // ## Permission: get registered accesses list
+  // =====================================>
   getAccesses: () => {
     const result: Record<string, {
       key: string
@@ -79,11 +88,7 @@ export const permission = {
   },
 }
 
-
-function normalize(
-  raw: KeyPermission,
-  defaultFeature?: KeyFeature
-): KeyPermission {
+function normalize(raw: KeyPermission, defaultFeature?: KeyFeature): KeyPermission {
   if (!raw.includes(".") && defaultFeature) {
     return `${defaultFeature}.${String(raw).padStart(2, "0") as KeyAccess}`
   }
@@ -133,4 +138,3 @@ export function createScopeApi(defaultFeature: KeyFeature) {
     }
   }
 }
-

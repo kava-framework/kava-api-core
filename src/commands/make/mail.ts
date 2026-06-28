@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { mailStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:mail
 // =====================================>
@@ -11,8 +13,8 @@ export const makeMailCommand = new Command("make:mail")
   .argument("<name>", "Name of mail")
   .description("Create new mail")
   .action((name) => {
-    const basePath = path.join(process.cwd(), "src", "outputs", "mails");
-    const templatePath = path.join(process.cwd(), "src", "outputs", "mails", "templates");
+    const basePath = path.join(process.cwd(), "app", "outputs", "mails");
+    const templatePath = path.join(process.cwd(), "app", "outputs", "mails", "templates");
     
     if (!name || name.trim() === "") {
       logger.error("Mail name invalid!");

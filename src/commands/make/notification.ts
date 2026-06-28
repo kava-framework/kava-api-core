@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { notificationStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:notification
 // =====================================>
@@ -11,7 +13,7 @@ export const makeNotificationCommand = new Command("make:notification")
   .argument("<name>", "Name of notification")
   .description("Create new notification")
   .action((name) => {
-    const basePath = path.join(process.cwd(), "src", "outputs", "notifications");
+    const basePath = path.join(process.cwd(), "app", "outputs", "notifications");
     
     if (!name || name.trim() === "") {
       logger.error("Notification name invalid!");

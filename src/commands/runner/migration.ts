@@ -117,7 +117,7 @@ async function runMigrationFile() {
 
   const migrationsDir = fs.existsSync(path.resolve("./database/migrations"))
     ? path.resolve("./database/migrations")
-    : path.resolve("./src/database/migrations");
+    : path.resolve("./database/migrations");
   if (!fs.existsSync(migrationsDir)) {
     logger.info("No migrations directory found.");
     return;

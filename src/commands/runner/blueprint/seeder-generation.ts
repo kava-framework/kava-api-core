@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import { lightSeederStub } from "../../stubs";
 
+
+
 // =================================>
 // ## Command: Blueprint seeder generation
 // =================================>
@@ -14,7 +16,7 @@ export async function seederGeneration(
 ): Promise<boolean> {
   const modelName = conversion.strPascal(model?.split("/")?.pop() || "");
   const name = modelName + "Seeder";
-  const basePath = path.join(process.cwd(), "src", "database", "seeders");
+  const basePath = path.join(process.cwd(), "database", "seeders");
   const filename = conversion.strSlug(modelName);
   const filePath = path.join(basePath, `${filename}.seeder.ts`);
   

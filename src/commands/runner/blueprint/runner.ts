@@ -10,6 +10,8 @@ import { generateDrawioEntityDocumentation, generateMermaidEntityDocumentation, 
 import { exec as execCb } from "child_process";
 import { promisify } from "util";
 
+
+
 const exec = promisify(execCb);
 
 export interface BlueprintSchema {
@@ -32,6 +34,8 @@ const blueprintMarker = `// ============================================
 
 `;
 
+
+
 // =====================================>
 // ## Command: blueprint
 // =====================================>
@@ -49,6 +53,8 @@ export const blueprintCommand = new Command("blueprint")
     
     process.exit(0);
   });
+
+
 
 // =======================>
 // ## Command: Blueprint engine
@@ -115,6 +121,8 @@ export async function runBlueprints(options?: { only?: string[] }) {
   await generatePostmanAPIDocumentation(postmanSchemas);
 }
 
+
+
 // =======================>
 // ## Command: Blueprint load json files
 // =======================>
@@ -146,11 +154,11 @@ type BlueprintFileType = "model" | "controller";
 
 const TYPE_MAP: Record<BlueprintFileType, { root: string; suffix: string }> = {
   model: {
-    root: "src/models",
+    root: "app/models",
     suffix: ".model",
   },
   controller: {
-    root: "src/controllers",
+    root: "app/controllers",
     suffix: ".controller",
   },
 };

@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { basicSeederStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:seeder
 // =====================================>
@@ -21,7 +23,7 @@ export const makeSeeder = (seederName: string, model?: string) => {
   const filename = conversion.strSlug(seederName) + ".seeder.ts";
   const modelName = model || conversion.strPascal(seederName);
 
-  const dir = path.join(process.cwd(), "src", "database", "seeders");
+  const dir = path.join(process.cwd(), "database", "seeders");
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   const filePath = path.join(dir, filename);

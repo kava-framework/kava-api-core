@@ -4,6 +4,8 @@ import { Command } from "commander";
 import { conversion, logger } from "@utils";
 import { basicMigrationStub } from "../stubs";
 
+
+
 // =====================================>
 // ## Command: make:migration
 // =====================================>
@@ -13,7 +15,10 @@ export const makeMigrationCommand = new Command("make:migration")
   .description("Membuat file migration baru")
   .action((name, options) => {
     makeMigration(name, options);
+    process.exit(0);
   });
+
+
 
 // =====================================>
 // ## Command: migration helpers
@@ -28,7 +33,6 @@ export const makeMigration = (
 
   const baseDir = path.join(
     process.cwd(),
-    "src",
     "database",
     "migrations"
   );
@@ -66,8 +70,6 @@ export const makeMigration = (
   writeFileSync(filePath, content);
 
   logger.info(`Migration created: ${path.relative(baseDir, filePath)}`);
-
-  process.exit(0);
 };
 
 const migrationPrefixFile = (date: Date) => {

@@ -4,6 +4,8 @@ import { conversion } from "@utils";
 import { resolveBlueprintPath } from "./runner";
 import { lightControllerStub, routeStub } from "../../stubs";
 
+
+
 // ================================>
 // ## Command: Blueprint controller generation
 // ================================>

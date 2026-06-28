@@ -18,9 +18,9 @@ export interface SendMailOptions {
 
 
 
-// =============================>
-// ## Mail: Send mail 
-// =============================>
+// =====================================>
+// ## Mail: Send mail
+// =====================================>
 export async function sendMail(options: {
   to            :  string;
   subject       :  string;
@@ -53,9 +53,9 @@ export async function sendMail(options: {
 
 
 
-// =============================>
-// ## Mail: Render mail template 
-// =============================>
+// =====================================>
+// ## Mail: Render mail template
+// =====================================>
 export function renderMailTemplate(template: string, options: Record<string, string>) {
   const templateDir = join(import.meta.dir, "./../outputs/mails/templates");
 

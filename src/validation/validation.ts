@@ -1,10 +1,11 @@
 import validator from "validator"
-import { db } from "@skalfa/skalfa-orm"
+import { db } from "@skalfa/skalfa-orm";
+
+
 
 // ==========================>
 // ## Validation: Rules of validation
 // ==========================>
-
 export type ValidationRule =
   | "required"
   | "string"
@@ -44,12 +45,14 @@ export interface ValidationResult {
   errors : Record<string, string[]>
 }
 
-// ==================================>
-// ## Check validate field from rules
-// ==================================>
+
+
+// =====================================>
+// ## Validation: validate request data
+// =====================================>
 export async function validate(
-  data: Record<string, any>,
-  rules: ValidationRules
+  data   :  Record<string, any>,
+  rules  :  ValidationRules
 ): Promise<ValidationResult> {
   const errors: Record<string, string[]> = {}
 
@@ -57,32 +60,12 @@ export async function validate(
     const fieldRules = normalizeRules(rules[field])
 
     if (field.includes("*")) {
-      // const [arrayPath, childPath] = field.split(".*.")
-      // const arr = getNestedValue(data, arrayPath)
-
-      // if (!Array.isArray(arr)) {
-      //   addError(errors, arrayPath, `${arrayPath} harus berupa array`)
-      //   continue
-      // }
-
-      // for (let i = 0; i < arr.length; i++) {
-      //   const value = childPath
-      //     ? getNestedValue(arr[i], childPath)
-      //     : arr[i]
-
-      //   const itemField = childPath
-      //     ? `${arrayPath}.${i}.${childPath}`
-      //     : `${arrayPath}.${i}`
-
-      //   await checkRules({ field: itemField, value, rules: fieldRules, data, errors })
-      // }
       const segments = field.split(".")
 
       await nestedValidation({ value: data, segments, rules: fieldRules, fieldPath: "", data, errors })
 
       continue
     }
-
 
     const value = getNestedValue(data, field) ?? ""
 
@@ -110,6 +93,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       case "string":
       case "text":
+        if (!value) break
         if (typeof value !== "string") {
           addError(errors, field, `${field} harus berupa string`)
         }
@@ -117,6 +101,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       case "numeric":
       case "number":
+        if (!value) break
         if (!validator.isNumeric(String(value))) {
           addError(errors, field, `${field} harus berupa angka`)
         }
@@ -129,18 +114,21 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
         break
 
       case "email":
+        if (!value) break
         if (!validator.isEmail(String(value))) {
           addError(errors, field, `${field} harus berupa email yang valid`)
         }
         break
 
       case "url":
+        if (!value) break
         if (!validator.isURL(String(value))) {
           addError(errors, field, `${field} harus berupa URL yang valid`)
         }
         break
 
       case "date":
+        if (!value) break
         if (!validator.isDate(String(value))) {
           addError(errors, field, `${field} harus berupa tanggal yang valid`)
         }
@@ -148,6 +136,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       // === LENGTH ===
       case "min": {
+        if (!value) break
         const min = parseInt(param!)
         if (!validator.isLength(String(value), { min })) {
           addError(errors, field, `${field} minimal ${min} karakter`)
@@ -156,6 +145,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
       }
 
       case "max": {
+        if (!value) break
         const max = parseInt(param!)
         if (!validator.isLength(String(value), { max })) {
           addError(errors, field, `${field} maksimal ${max} karakter`)
@@ -164,6 +154,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
       }
 
       case "between": {
+        if (!value) break
         const [minVal, maxVal] = param!.split(",").map(Number)
         if (!validator.isLength(String(value), { min: minVal, max: maxVal })) {
           addError(errors, field, `${field} harus antara ${minVal} - ${maxVal} karakter`)
@@ -173,6 +164,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       // === SET MEMBERSHIP ===
       case "in": {
+        if (!value) break
         const allowed = param!.split(",")
         if (!allowed.includes(String(value))) {
           addError(errors, field, `${field} harus salah satu dari: ${allowed.join(", ")}`)
@@ -181,6 +173,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
       }
 
       case "not_in": {
+        if (!value) break
         const notAllowed = param!.split(",")
         if (notAllowed.includes(String(value))) {
           addError(errors, field, `${field} tidak boleh salah satu dari: ${notAllowed.join(", ")}`)
@@ -188,11 +181,13 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
         break
       }
 
-      case "array":
-      if (!Array.isArray(value)) {
-        addError(errors, field, `${field} harus berupa array`)
+      case "array": {
+        if (!value) break
+        if (!Array.isArray(value)) {
+          addError(errors, field, `${field} harus berupa array`)
+        }
+        break
       }
-      break
 
       // === RELATIONAL ===
       case "confirmed":
@@ -215,6 +210,7 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       // === REGEX ===
       case "regex":
+        if (!value) break
         try {
           const pattern = new RegExp(param!)
           if (!pattern.test(String(value))) {
@@ -227,31 +223,36 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
       // === DATABASE VALIDATION ===
       case "unique": {
-        if (!db) {
-          console.warn(`[Validation Warning] "unique" rule skipped on field "${field}" because database is not configured/installed.`);
-          break;
-        }
+        if (!value) break
         const [table, column, exceptId] = param!.split(",")
         const query = db.table(table).where(column, value)
         if (exceptId) query.whereNot("id", exceptId)
+
+        if (await db.schema.hasColumn(table, "deleted_at")) {
+          query.whereNull("deleted_at")
+        }
+
         const existing = await query.first()
         if (existing) {
           addError(errors, field, `${field} sudah digunakan`)
         }
-        break;
+        break
       }
 
       case "exists": {
-        if (!db) {
-          console.warn(`[Validation Warning] "exists" rule skipped on field "${field}" because database is not configured/installed.`);
-          break;
-        }
+        if (!value) break
         const [table, column] = param!.split(",")
-        const existing = await db.table(table).where(column, value).first()
+        const query = db.table(table).where(column, value)
+
+        if (await db.schema.hasColumn(table, "deleted_at")) {
+          query.whereNull("deleted_at")
+        }
+
+        const existing = await query.first()
         if (!existing) {
           addError(errors, field, `${field} tidak ditemukan di ${table}`)
         }
-        break;
+        break
       }
     }
   }
@@ -259,29 +260,17 @@ async function checkRules({ field, value, rules, data, errors } : { field: strin
 
 
 
-async function nestedValidation({
-  value,
-  segments,
-  rules,
-  fieldPath,
-  data,
-  errors
-}: {
-  value: any
-  segments: string[]
-  rules: ValidationRule[]
-  fieldPath: string
-  data: any
-  errors: Record<string, string[]>
+async function nestedValidation({ value, segments, rules, fieldPath, data, errors }: {
+  value      :  any
+  segments   :  string[]
+  rules      :  ValidationRule[]
+  fieldPath  :  string
+  data       :  any
+  errors     :  Record<string, string[]>
 }) {
   if (segments.length === 0) {
-    await checkRules({
-      field: fieldPath,
-      value,
-      rules,
-      data,
-      errors
-    })
+    await checkRules({ field: fieldPath, value, rules, data, errors })
+
     return
   }
 
@@ -290,28 +279,15 @@ async function nestedValidation({
   if (segment === "*") {
     if (!Array.isArray(value)) {
       addError(errors, fieldPath, `${fieldPath} harus berupa array`)
+
       return
     }
 
     for (let i = 0; i < value.length; i++) {
-      await nestedValidation({
-        value: value[i],
-        segments: rest,
-        rules,
-        fieldPath: `${fieldPath}.${i}`,
-        data,
-        errors
-      })
+      await nestedValidation({ value: value[i], segments: rest, rules, fieldPath: `${fieldPath}.${i}`, data, errors })
     }
   } else {
-    await nestedValidation({
-      value: value?.[segment],
-      segments: rest,
-      rules,
-      fieldPath: fieldPath ? `${fieldPath}.${segment}` : segment,
-      data,
-      errors
-    })
+    await nestedValidation({ value: value?.[segment], segments: rest, rules, fieldPath: fieldPath ? `${fieldPath}.${segment}` : segment, data, errors})
   }
 }
 
@@ -329,15 +305,15 @@ function getNestedValue(obj: any, path: string): any {
     .replace(/\["([^"]+)"\]/g, '.$1')
 
   return normalizedPath.split('.').reduce((acc, key) => {
-    if (acc && Object.prototype.hasOwnProperty.call(acc, key)) {
-      return acc[key]
-    }
+    if (acc && Object.prototype.hasOwnProperty.call(acc, key)) return acc[key]
+
     return undefined
   }, obj)
 }
 
 function normalizeRules(rules: ValidationRule[] | string): ValidationRule[] {
   if (Array.isArray(rules)) return rules
+
   return rules.split("|") as ValidationRule[]
 }
 

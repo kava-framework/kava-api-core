@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import { lightMigrationStub } from "../../stubs";
 
+
+
 // ==================================>
 // ## Command: Blueprint migration generation
 // ==================================>
@@ -13,7 +15,7 @@ export async function migrationGeneration(
   marker: string
 ): Promise<boolean> {
   const name = conversion.strSnake(conversion.strPlural(model.split("/").pop() || ""));
-  const basePath = path.join(process.cwd(), "src", "database", "migrations", "0000_00");
+  const basePath = path.join(process.cwd(), "database", "migrations", "0000_00");
   const filename = `${name}.ts`;
   const filePath = path.join(basePath, filename);
   const className = `create${conversion.strPascal(name)}Table`;

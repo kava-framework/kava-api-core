@@ -2,15 +2,16 @@ import fs from "fs";
 import path from "path";
 import { Command } from "commander";
 import { logger } from "@utils";
-// @ts-ignore
 import * as utils from "@utils";
 
 const da = (utils as any).da;
 const daClient = (utils as any).daClient;
 
-const DW_MIGRATIONS_DIR = path.resolve("./src/database/da.migrations");
+const DW_MIGRATIONS_DIR = path.resolve("./analytic/migrations");
 
 const MIGRATION_TABLE = `${process.env.DA_DATABASE || "default"}.migrations`;
+
+
 
 // ================================
 // ## Create Migration Table
