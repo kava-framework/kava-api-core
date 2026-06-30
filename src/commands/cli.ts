@@ -2,23 +2,19 @@ import fs from "fs";
 import path from "path";
 import { Command } from "commander";
 
-// Basic commands (always available)
 import { makeControllerCommand } from "./make/basic-controller";
-import { makeLightControllerCommand } from "./make/skalfa-controller";
+import { makeSkalfaControllerCommand } from "./make/skalfa-controller";
 import { barrelsCommand, watchBarrelsCommand } from "./runner/barrels";
-
-// ORM commands (optional)
 import { makeModelCommand } from "./make/basic-model";
 import { makeSeederCommand } from "./make/basic-seeder";
 import { makeMigrationCommand } from "./make/basic-migration";
-import { makeLightModelCommand } from "./make/skalfa-model";
+import { makeSkalfaModelCommand } from "./make/skalfa-model";
 import { makeBlueprintCommand } from "./make/blueprint";
 import { makeResourceCommand } from "./make/resource";
 import { migrateCommand, migrateFreshCommand } from "./runner/migration";
 import { seederCommand } from "./runner/seeder";
 import { blueprintCommand } from "./runner/blueprint/runner";
-
-// Extension-specific commands
+import { generateDocsCommand } from "./runner/generate-docs";
 import { makeQueueCommand } from "./make/queue";
 import { makeMailCommand } from "./make/mail";
 import { makeNotificationCommand } from "./make/notification";
@@ -26,7 +22,6 @@ import { makeDaMigrationCommand } from "./make/da-migration";
 import { daMigrateCommand, daMigrateFreshCommand } from "./runner/da-migration";
 
 export function runCli() {
-  // Read package.json to dynamically detect installed extensions
   let dependencies: Record<string, string> = {};
   try {
     const pkgPath = path.join(process.cwd(), "package.json");
@@ -36,7 +31,6 @@ export function runCli() {
     }
   } catch {}
 
-  const hasOrm = !!dependencies["@skalfa/skalfa-orm"];
   const hasMail = !!dependencies["@skalfa/mail"] || !!dependencies["skalfa-mail"];
   const hasNotification = !!dependencies["@skalfa/notification"] || !!dependencies["skalfa-notification"];
   const hasQueue = !!dependencies["@skalfa/queue"] || !!dependencies["@skalfa/redis"] || !!dependencies["skalfa-queue"] || !!dependencies["skalfa-redis"];
@@ -45,42 +39,36 @@ export function runCli() {
   const program = new Command();
   program.name("skalfa").description("Skalfa-api CLI").version("1.0.0");
 
-  // 1. Add Core / Basic commands
-  program.addCommand(makeControllerCommand);
-  program.addCommand(makeLightControllerCommand);
   program.addCommand(barrelsCommand);
+
+  program.addCommand(makeControllerCommand);
+  program.addCommand(makeSkalfaControllerCommand);
   program.addCommand(watchBarrelsCommand);
+  program.addCommand(makeModelCommand);
+  program.addCommand(makeMigrationCommand);
+  program.addCommand(makeSeederCommand);
+  program.addCommand(makeSkalfaModelCommand);
+  program.addCommand(makeBlueprintCommand);
+  program.addCommand(makeResourceCommand);
 
-  // 2. Add ORM commands if installed
-  if (hasOrm) {
-    program.addCommand(makeModelCommand);
-    program.addCommand(makeMigrationCommand);
-    program.addCommand(makeSeederCommand);
-    program.addCommand(makeLightModelCommand);
-    program.addCommand(makeBlueprintCommand);
-    program.addCommand(makeResourceCommand);
-    program.addCommand(migrateCommand);
-    program.addCommand(migrateFreshCommand);
-    program.addCommand(seederCommand);
-    program.addCommand(blueprintCommand);
-  }
+  program.addCommand(migrateCommand);
+  program.addCommand(migrateFreshCommand);
+  program.addCommand(seederCommand);
+  program.addCommand(blueprintCommand);
+  program.addCommand(generateDocsCommand);
 
-  // 3. Add Mail commands if installed
   if (hasMail) {
     program.addCommand(makeMailCommand);
   }
 
-  // 4. Add Notification commands if installed
   if (hasNotification) {
     program.addCommand(makeNotificationCommand);
   }
 
-  // 5. Add Queue commands if installed
   if (hasQueue) {
     program.addCommand(makeQueueCommand);
   }
 
-  // 6. Add Data Analytics / OLAP commands if installed
   if (hasDa) {
     program.addCommand(makeDaMigrationCommand);
     program.addCommand(daMigrateCommand);

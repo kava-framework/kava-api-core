@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { conversion } from "@utils";
 import { resolveBlueprintPath } from "./runner";
-import { lightControllerStub, routeStub } from "../../stubs";
+import { skalfaControllerStub, routeStub } from "../../stubs";
 
 
 
@@ -33,7 +33,7 @@ export async function controllerGeneration(
     ...generateRelationValidations(relations)
   };
 
-  let stub = lightControllerStub;
+  let stub = skalfaControllerStub;
 
   stub = stub
     .replace(/{{\s*marker\s*}}/g, marker)

@@ -1,7 +1,7 @@
 import { conversion, logger } from "@utils";
 import fs from "fs";
 import path from "path";
-import { lightSeederStub } from "../../stubs";
+import { skalfaSeederStub } from "../../stubs";
 
 
 
@@ -39,7 +39,7 @@ export async function seederGeneration(
       })
     .join(", ")}}`).join(",\n    ");
 
-  let stub = lightSeederStub;
+  let stub = skalfaSeederStub;
 
   stub = stub
     .replace(/{{\s*marker\s*}}/g, marker)

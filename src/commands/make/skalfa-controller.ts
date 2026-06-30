@@ -2,23 +2,23 @@ import path from "path";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { Command } from "commander";
 import { conversion, logger } from "@utils";
-import { lightControllerStub } from "../stubs";
+import { skalfaControllerStub } from "../stubs";
 
 
 
 // =====================================>
-// ## Command: make:light-controller
+// ## Command: make:skafa-controller
 // =====================================>
-export const makeLightControllerCommand = new Command("make:skalfa-controller")
+export const makeSkalfaControllerCommand = new Command("make:skalfa-controller")
   .argument("<name>", "Name of controller")
   .option("-m, --model <model>", "Attach model to controller")
-  .description("Make the Light Controller")
+  .description("Make the Skalfa Controller")
   .action((name, options) => {
-      makeLightController(name, options.model);
+      makeSkalfaController(name, options.model);
       process.exit(0);
   });
 
-export const makeLightController = (controllerName: string, modelName?: string) => {
+export const makeSkalfaController = (controllerName: string, modelName?: string) => {
   const basePath = path.join(process.cwd(), "app", "controllers");
 
   if (!controllerName || controllerName.trim() === "") {
@@ -48,7 +48,7 @@ export const makeLightController = (controllerName: string, modelName?: string) 
     logger.info(`Create folder ${targetDir}...`);
   }
 
-  let stub = lightControllerStub;
+  let stub = skalfaControllerStub;
 
   stub = stub.replace(
     /{{\s*name\s*}}|{{\s*model\s*}}|{{\s*validations\s*}}|{{\s*marker\s*}}/g,

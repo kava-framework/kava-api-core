@@ -43,7 +43,7 @@ export const makeControllerCommand = new Command("make:controller")
     
     let content = basicControllerStub;
     content = content.replace(/{{\s*name\s*}}/g, name || "");
- 
+
     writeFileSync(filePath, content);
   
     logger.info(`Controller ${controllerName} created!`);

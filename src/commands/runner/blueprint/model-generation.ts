@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { conversion } from "@utils";
 import { resolveBlueprintPath } from "./runner";
-import { lightModelStub } from "../../stubs";
+import { skalfaModelStub } from "../../stubs";
 
 
 
@@ -105,7 +105,7 @@ export async function modelGeneration(
     imports.push(`import { ${importRelations.join(", ")} } from '@models'`);
   }
 
-  let stub = lightModelStub;
+  let stub = skalfaModelStub;
   const strImportUtils = importUtils?.length ? ", " + importUtils.join(", ") : "";
 
   stub = stub

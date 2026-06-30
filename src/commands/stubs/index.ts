@@ -86,7 +86,7 @@ export default class {{ className }} extends DAMigration {
 }
 `;
 
-export const lightControllerStub = `{{ marker }}
+export const skalfaControllerStub = `{{ marker }}
 import type { ControllerContext } from "elysia"
 import { permission } from '@utils'
 import { {{ model }} } from '@models'
@@ -182,7 +182,7 @@ export class {{ name }} {
 }
 `;
 
-export const lightMigrationStub = `{{ marker }}
+export const skalfaMigrationStub = `{{ marker }}
 import type { Knex } from "knex"
 
 export async function up(knex: Knex): Promise<void> {
@@ -196,7 +196,7 @@ export async function up(knex: Knex): Promise<void> {
 {{ pivot }}
 }`;
 
-export const lightModelStub = `{{ marker }}
+export const skalfaModelStub = `{{ marker }}
 import { Model, SoftDelete{{ import_utils }} } from '@utils'
 {{ import }}
 
@@ -229,7 +229,7 @@ export class {{ name }} extends Model {
 }
 `;
 
-export const lightSeederStub = `{{ marker }}
+export const skalfaSeederStub = `{{ marker }}
 import { {{ model }} } from "@models";
 
 export default async function {{ name }}Seeder() {

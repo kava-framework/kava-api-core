@@ -1,7 +1,7 @@
 import { conversion, logger } from "@utils";
 import fs from "fs";
 import path from "path";
-import { lightMigrationStub } from "../../stubs";
+import { skalfaMigrationStub } from "../../stubs";
 
 
 
@@ -111,7 +111,7 @@ export async function migrationGeneration(
 
   const migrationSchema = migrationFields.map((f) => `    ${f}`).join("\n");
 
-  let stub = lightMigrationStub;
+  let stub = skalfaMigrationStub;
 
   stub = stub
     .replace(/{{\s*marker\s*}}/g, marker)

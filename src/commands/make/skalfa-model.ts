@@ -2,25 +2,25 @@ import path from "path";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { Command } from "commander";
 import { conversion, logger } from "@utils";
-import { makeLightController } from "./skalfa-controller";
+import { makeSkalfaController } from "./skalfa-controller";
 import { makeMigration } from "./basic-migration";
 import { makeSeeder } from "./basic-seeder";
-import { lightModelStub } from "../stubs";
+import { skalfaModelStub } from "../stubs";
 
 
 
 // =====================================>
-// ## Command: make:light-model
+// ## Command: make:skalfa-model
 // =====================================>
-export const makeLightModelCommand = new Command("make:skalfa-model")
+export const makeSkalfaModelCommand = new Command("make:skalfa-model")
   .argument("<name>", "Name of model")
   .option("-r", "Generate all resource (controller, migration, seeder)")
-  .description("Make the Light Model")
+  .description("Make the Skalfa Model")
   .action((name, options) => {
-    makeLightModel(name);
+    makeSkalfaModel(name);
 
     if (options.r) {
-      makeLightController(name);
+      makeSkalfaController(name);
       makeMigration("create_" + name, { init: true });
       makeSeeder(name);
     }
@@ -28,7 +28,7 @@ export const makeLightModelCommand = new Command("make:skalfa-model")
     process.exit(0);
   });
 
-export const makeLightModel = (modelName: string) => {
+export const makeSkalfaModel = (modelName: string) => {
   const name = conversion.strPascal(modelName);
   const filename = conversion.strSlug(modelName) + ".model.ts";
 
@@ -45,7 +45,7 @@ export const makeLightModel = (modelName: string) => {
     return;
   }
 
-  let stub = lightModelStub;
+  let stub = skalfaModelStub;
 
   stub = stub
     .replace(/{{\s*name\s*}}/g, name)

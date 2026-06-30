@@ -6,7 +6,6 @@ import { modelGeneration } from "./model-generation";
 import { migrationGeneration } from "./migration-generation";
 import { controllerGeneration } from "./controller-generation";
 import { seederGeneration } from "./seeder-generation";
-import { generateDrawioEntityDocumentation, generateMermaidEntityDocumentation, generatePostmanAPIDocumentation } from "./documentation-generation";
 import { exec as execCb } from "child_process";
 import { promisify } from "util";
 
@@ -111,14 +110,14 @@ export async function runBlueprints(options?: { only?: string[] }) {
         await seederGeneration(struct.model, schema, seeders, marker);
       }
 
-      if (struct.mermaid !== false) {
-        await generateMermaidEntityDocumentation(file.file, file.blueprints);
-      }
+      // if (struct.mermaid !== false) {
+      //   await generateMermaidEntityDocumentation(file.file, file.blueprints);
+      // }
     }
   }
 
-  await generateDrawioEntityDocumentation(loaded);
-  await generatePostmanAPIDocumentation(postmanSchemas);
+  // await generateDrawioEntityDocumentation(loaded);
+  // await generatePostmanAPIDocumentation(postmanSchemas);
 }
 
 
